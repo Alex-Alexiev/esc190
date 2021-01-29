@@ -8,40 +8,58 @@ typedef struct node{
     node *next; 
 } node;
 
-node *createNode(void *data){
-    node *newNode = (node *)malloc(sizeof(node));
+node *llCreateNode(void *data){
+    node *newNode = NULL;
+    newNode = (node *)malloc(sizeof(node));
+    if (newNode == NULL){
+        printf("unable to create node");
+        exit(1);
+    }
     newNode->data = data;
     newNode->next = NULL;
     return newNode;
 }
 
-void insert(node *head, void *data){
-    node *newNode = createNode(data);
+void llInsert(node *head, void *data){
+    node *newNode = llCreateNode(data);
     newNode->next = head->next;
     head->next = newNode;
 }
 
-void append(node *head, void *data){
+void llAppend(node *head, void *data){
     while(head->next != NULL){
         head = head->next;
     }
-    head->next = createNode(data);
+    head->next = llCreateNode(data);
 }
 
-void printList(node *head, char *(*stringer)(void *)){
+void llPrint(node *head, char *(*stringer)(void *)){
     while(head != NULL){
         printf("%s ", (*stringer)(head->data));
-        //printf("%s, ", head->data);
         head = head->next;
     }
     printf("\n");
 }
 
-void printListRec(node *curr, char*(*stringer)(void *)){
+void llPrintRec(node *curr, char*(*stringer)(void *)){
     if (curr == NULL){
         printf("\n");
         return; 
     }
     printf("%s ", (*stringer)(curr->data));
-    printListRec(curr->next, stringer);
+    llPrintRec(curr->next, stringer);
+}
+
+void llFree(node *curr){
+    if (curr == NULL){
+        return;
+    }
+    llFree(curr->next);
+    free(curr);
+    // node *next = NULL;
+    // while (curr != NULL){
+    //     next = curr->next;
+    //     free(curr);
+    //     curr = next;
+    // }
 }

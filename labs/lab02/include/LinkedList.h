@@ -3,14 +3,16 @@
 
 typedef struct node node;
 
-node *createNode(void *data);
+node *llCreateNode(void *data);
 
-void insert(node *head, void *data);
+void llInsert(node *head, void *data);
 
-void append(node *head, void *data);
+void llAppend(node *head, void *data);
 
-void printList(node *head,  char *(*stringer)(void *));
+void llPrint(node *head,  char *(*stringer)(void *));
 
-void printListRec(node *curr, char *(*stringer)(void *));
+void llPrintRec(node *curr, char *(*stringer)(void *));
+
+void llFree(node *curr);
 
 #endif
