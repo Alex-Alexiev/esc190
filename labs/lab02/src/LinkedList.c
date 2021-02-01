@@ -4,7 +4,7 @@
 #include "LinkedList.h"
 
 typedef struct node{
-    void *data; 
+    void *data;
     node *next; 
 } node;
 

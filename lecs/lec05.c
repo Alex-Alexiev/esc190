@@ -70,6 +70,11 @@ int main(){
     c[10] = 50; 
     printf("%ld\n", c[10]);
 
+    int *ab = malloc(sizeof(int));
+    *ab = 10;
+    void *va = ab;
+    printf("%d\n", *(int *)va);
+
 
     return 0;
 }
