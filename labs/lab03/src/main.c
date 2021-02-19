@@ -8,25 +8,31 @@
 
 char *my_strcat(char *dest, char *src){
     char *ret = (char *)malloc(strlen(dest) + strlen(src));
-    int last = 0;
 
-    for (int i = 0; i<strlen(dest); i++){
+    int i = 0;
+    for (; i<strlen(dest); i++){
         ret[i] = dest[i];
-        last++;
     }
   
-    for(int i = 0; i<strlen(src); i++){
-        ret[i + last] = src[i];
+    for(int j = 0; j <strlen(src); j++){
+        ret[i + j] = src[j];
     }
     return ret; 
 }
 
 //return lexicographical comparison 
 int my_strcmp_rec(char *str1, char *str2){
-    int diff = *str1 - *str2;
-    if (*str1 == 0){
-        return diff;
+    if (*str1 == 0 && *str2 == 0){
+        return 0;
     }
+    if (*str1 == 0){
+        return 'a' - *str2;
+    }
+    if (*str2 == 0){
+        return *str1 - 'a';
+    }
+    
+    int diff = *str1 - *str2;
     if (diff == 0){
         return my_strcmp_rec(++str1, ++str2);
     }
@@ -34,7 +40,7 @@ int my_strcmp_rec(char *str1, char *str2){
 }
 
 int my_atoi(char *str){
-    int ret;
+    int ret = 0;
     int len = strlen(str);
     for (int i = 0; i < len; i++){
         int curr = str[i]-'0';
@@ -43,16 +49,17 @@ int my_atoi(char *str){
     return ret;
 }
 
-
-
 int main(){
-    // printf("%d\n", my_strcmp_rec("alev", "alex"));
-    // char *dest = "one";
-    // char *src = "twolasdl";
-    // char *res = my_strcat(dest, src);
+    printf("str_cmp: %d\n", my_strcmp_rec("aley", "alez"));
+
+    char *dest = "one";
+    char *src = "two";
+    char *res = my_strcat(dest, src);
+
+    printf("catentation: %s\n", res);
     
     //my_stcmp_rec("alex", "alex");
-    //printf("%d\n", my_atoi("123"));
+    printf("%d\n", my_atoi("123"));
 
     dsLinkedList_node *na = dsLinkedList_createNode(NULL);
     dsLinkedList_node *nb = dsLinkedList_createNode(NULL);
