@@ -7,30 +7,28 @@
 #define TAB 9
 #define SPACE 32
 
-// void print_term(struct term t){
-//     printf("weight:%f, value:%s", t.weight, t.term);
-// }
+void print_term(struct term t){
+    printf("weight:%f, value:%s\n", t.weight, t.term);
+}
 
-// void print_term_list(struct term *terms, int nterms){
-//     for (int i = 0; i < nterms; i++){
-//         print_term(terms[i]);
-//     }
-// }
-
-char *substring(char *str, int start, int end){
-    int len = end - start;
-    char *ret = (char *)malloc(len);
-    for (int i = start; i < end; i++){
-        *ret = str[i];
-        ret++;
+void print_term_list(struct term *terms, int nterms){
+    for (int i = 0; i < nterms; i++){
+        print_term(terms[i]);
     }
+}
 
-    *ret = '\0';
-    return ret - len;
+char *substring(char *dest, char *str, int start, int end){
+    int len = end - start;
+    for (int i = start; i < end; i++){
+        *dest = str[i];
+        dest++;
+    }
+    *dest = '\0';
+    return dest - len;
 }
 
 
-int get_weight(char *line){
+void get_weight(int *weight, char *line){
     int i = 0;
     while(line[i] == SPACE){
         i++;
@@ -40,18 +38,23 @@ int get_weight(char *line){
     while(line[j] != TAB){
         j++;
     }
-
-    return atoi(substring(line, i, j));
+    char *dest = (char *)malloc(sizeof(char)*200);
+    *weight = atoi(substring(dest, line, i, j));
+    free(dest);
 }
 
-char *get_term_text(char *line){
+void get_term_text(char **term_text, char *line){
     int i = 0;
     while(line[i++] != TAB);
 
     int j = i;
     while(line[j++] != '\0');
     
-    return substring(line, i, j);
+    //char *dest = (char *)malloc(sizeof(char)*200);
+    *term_text = substring(*term_text, line, i, j-2);
+    //free(dest);
+    
+    //term_text = substring(term_text, line, i, j);
 }
 
 int compare_terms(const void *term1_v, const void *term2_v){
@@ -96,7 +99,6 @@ void read_in_terms(struct term **terms, int *pnterms, char *filename) {
     char n[100];
     fgets(n, sizeof(n), fp);
     int N = atoi(n);
-    // N = 15;
     int weight;
     char *term_text =(char *)malloc(200);
     
@@ -105,8 +107,8 @@ void read_in_terms(struct term **terms, int *pnterms, char *filename) {
     for(int i = 0; i < N; i++){
         fgets(line, sizeof(line), fp); 
 
-        weight = get_weight(line);
-        term_text = get_term_text(line);
+        get_weight(&weight, line);
+        get_term_text(&term_text, line);
     
         // struct term *new_term = (struct term *)malloc(sizeof(struct term));
         // new_term->weight = weight;
