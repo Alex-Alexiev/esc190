@@ -1,4 +1,5 @@
 import numpy as np
+import heapq as pq
 
 class Node:
     def __init__(self, name):
@@ -96,10 +97,33 @@ def DFS_nonrec(node):
 # OPTIONAL
 #
 
-    """Initialize all the distances to infinity, then while there
-    are unvisited nodes, go to the closest unvisited node and 
-    check all the distances to its unvisited neighbours 
-    """
+def dijsktra_pq(node):
+    S = []
+    d = {node:0}
+
+    count = 0
+    _pq = []
+    pq.heappush(_pq, (0, count, node))
+    
+    curr = node
+
+    while _pq:
+        dist, _, curr = pq.heappop(_pq)
+        if curr in S:
+            continue
+        S.append(curr)
+        d[curr] = dist
+        for conn in curr.connections:
+            pq.heappush(_pq, (d[curr]+conn["weight"],  count, conn["node"]))
+            count += 1
+        
+    return d 
+        
+
+        
+
+
+
 def dijsktra_slowish_1(node):
     '''Implement Dijkstra's algorithm as discussed in class (i.e., you don't
     need to use a priority queue'''
@@ -136,6 +160,7 @@ def dijsktra_slowish_2(node):
     need to use a priority queue'''
     S = [node] 
     d = {node: 0}
+    prev = {}
 
     unvisit_all(node)
     unexplored = get_all_nodes(node)
@@ -144,6 +169,7 @@ def dijsktra_slowish_2(node):
     while unexplored:
         min_dist = float('inf')
         min_node = None
+        min_prev = None
         for n in S:
             for conn in n.connections:
                 if conn["node"] in S:
@@ -154,38 +180,24 @@ def dijsktra_slowish_2(node):
                 if distance < min_dist:
                     min_dist = distance
                     min_node = conn["node"]
+                    min_prev = n
         S.append(min_node)
         unexplored.remove(min_node)
         d[min_node] = min_dist
+        prev[min_node] = min_prev
 
-    return d
+    return d, prev
 
-# def dijsktra_slowish_2(node):
-#     '''Implement Dijkstra's algorithm as discussed in class (i.e., you don't
-#     need to use a priority queue'''
-#     S = [node] 
-#     d = {node.name: 0}
-
-#     unvisit_all(node)
-#     unexplored = get_all_nodes(node)
-#     unexplored.remove(node)  
-
-#     while len(unexplored) > 0:
-#         min = float('inf')
-#         for n in S:
-#             for conn in n.connections:
-#                 if (conn["weight"] + d[n.name] < min and conn["node"] not in unexplored):
-#                     min = conn["weight"] + d[n.name]
-#                     min_id = conn["node"]
-#         d[min_id.name] = min
-#         S.append(min_id)
-#         min_id.visited = True
-#         unexplored.remove(min_id)
-
-#     return d
-
-
-
+def get_shortest_path_dj(start, end):
+    d, prev = dijsktra_slowish_2(start)
+    path = []
+    curr = end
+    while curr in prev:
+        path.append(curr)
+        curr = prev[curr]
+        
+    path.append(start)
+    return path[::-1]
 
 if __name__ == '__main__':
     TO = Node("A")
@@ -199,10 +211,16 @@ if __name__ == '__main__':
     connect(TO, CDMX, 7)
     connect(NYC, DC, 2)
     connect(SF, DC, 5)
+    
 
     #BFS(TO)
     #DFS_rec(TO)
     #DFS_nonrec(TO)
 
-    for node, distance in dijsktra_slowish_2(TO).items():
-        print(node.name, " ", distance)
+    d = dijsktra_pq(TO)
+    for key, val in d.items():
+        print(key.name, " ", val)
+
+    # path = get_shortest_path_dj(TO, DC)
+    # for node in path:
+    #     print(node.name, end=" ")
