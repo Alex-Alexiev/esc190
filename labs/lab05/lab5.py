@@ -88,7 +88,7 @@ def DFS_nonrec(node):
         for conn in curr.connections[::-1]:
             if conn["node"].visited: 
                 continue
-            s.push(conn["node"])
+            s.append(conn["node"])
             conn["node"].visited = True
 
 
@@ -200,11 +200,11 @@ def get_shortest_path_dj(start, end):
     return path[::-1]
 
 if __name__ == '__main__':
-    TO = Node("A")
-    NYC = Node("B")
-    DC = Node("C")
-    CDMX = Node("D")
-    SF = Node("E")
+    TO = Node("TO")
+    NYC = Node("NYC")
+    DC = Node("DC")
+    CDMX = Node("CDMX")
+    SF = Node("SF")
 
     connect(TO, NYC, 3)
     connect(TO, SF, 6)
@@ -213,13 +213,21 @@ if __name__ == '__main__':
     connect(SF, DC, 5)
     
 
-    #BFS(TO)
-    #DFS_rec(TO)
-    #DFS_nonrec(TO)
+    BFS(TO)
+    unvisit_all(TO)
+    DFS_rec(TO)
+    unvisit_all(TO)
+    DFS_nonrec(TO)
+    unvisit_all(TO)
 
-    d = dijsktra_pq(TO)
+    d, prev = dijsktra_slowish_2(TO)
+
     for key, val in d.items():
         print(key.name, " ", val)
+
+    # d = dijsktra_pq(TO)
+    # for key, val in d.items():
+    #     print(key.name, " ", val)
 
     # path = get_shortest_path_dj(TO, DC)
     # for node in path:

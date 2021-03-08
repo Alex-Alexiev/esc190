@@ -1,0 +1,6 @@
+5
+    4	aba
+    2	abace
+    2	abade
+    2	abaee
+    2	abafe

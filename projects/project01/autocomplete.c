@@ -49,12 +49,14 @@ void get_term_text(char **term_text, char *line){
 
     int j = i;
     while(line[j++] != '\0');
+
+    if (line[j-2] == '\n'){
+        *term_text = substring(*term_text, line, i, j-2);
+    } else {
+        *term_text = substring(*term_text, line, i, j-1);
+    }
     
-    //char *dest = (char *)malloc(sizeof(char)*200);
-    *term_text = substring(*term_text, line, i, j-2);
-    //free(dest);
     
-    //term_text = substring(term_text, line, i, j);
 }
 
 int compare_terms(const void *term1_v, const void *term2_v){
@@ -62,7 +64,6 @@ int compare_terms(const void *term1_v, const void *term2_v){
     struct term const *term1 = ((struct term *)term1_v);
     struct term const *term2 = ((struct term *)term2_v);
     while(term1->term[i] != '\0' && term2->term[i] != '\0' && term1->term[i] - term2->term[i] == 0){
-        //printf("Term 1: %s, Term 2: %s, difference: %d", term1->term[i], term2->term[i], term1->term[i] - term2->term[i]);
         i++;
     }
     return term1->term[i] - term2->term[i];
@@ -73,10 +74,12 @@ int compare_term_string(const void *term_v, const void *substr_v){
     struct term const *tterm = (struct term *)term_v;
     char const *substr = (char *)substr_v;
     while(tterm->term[i] - substr[i] == 0){
-        //printf("Term 1: %s, Term 2: %s, difference: %d", term1->term[i], term2->term[i], term1->term[i] - term2->term[i]);
         i++;
         if (tterm->term[i] == '\0' || substr[i] == '\0'){
-            return 0;
+            if (substr[i] == '\0'){
+                return 0;
+            }
+            return -substr[i];
         }
     }
     return tterm->term[i] - substr[i];
@@ -99,6 +102,7 @@ void read_in_terms(struct term **terms, int *pnterms, char *filename) {
     char n[100];
     fgets(n, sizeof(n), fp);
     int N = atoi(n);
+    
     int weight;
     char *term_text =(char *)malloc(200);
     
@@ -109,10 +113,6 @@ void read_in_terms(struct term **terms, int *pnterms, char *filename) {
 
         get_weight(&weight, line);
         get_term_text(&term_text, line);
-    
-        // struct term *new_term = (struct term *)malloc(sizeof(struct term));
-        // new_term->weight = weight;
-        // strcpy(new_term->term, term_text);
 
         struct term new_term;
         new_term.weight = weight;
@@ -120,6 +120,8 @@ void read_in_terms(struct term **terms, int *pnterms, char *filename) {
 
         (*terms)[i] = new_term;
     }
+
+    fclose(fp);
 
     qsort(*terms, N, sizeof(struct term), compare_terms);
     *pnterms = N;
@@ -164,6 +166,9 @@ void autocomplete(struct term **answer, int *n_answer, struct term *terms, int n
     int lowest = lowest_match(terms, nterms, substr);
     int highest = highest_match(terms, nterms, substr);
     *n_answer = highest - lowest + 1;
+    if (lowest == -1 || highest == -1){
+        *n_answer = 0;
+    }
     *answer = (struct term *)malloc(sizeof(struct term)*(*n_answer));
     for(int i = 0; i < *n_answer; i++){
         (*answer)[i] = terms[i + lowest];
