@@ -50,13 +50,25 @@ a.insert(15)
 # Problem 1
 # Draw (manually) the binary tree rooted in a.
 
-
+                
+            #     4
+            #    / \
+            #   2   5
+            #    \   \
+            #     3   10 
+            #          \
+            #           15                
+                    
 
 
 # Problem 2
 # Write code to find the height of a Binary Search Tree
 
+def tree_height(node):
+    if node is None: return 0
+    return 1 + max(tree_height(node.left), tree_height(node.right))
 
+print(tree_height(a))
 
 # Problem 3
 
@@ -66,8 +78,16 @@ a.insert(15)
 # (Modify the BFS function from lecture for this problem)
 
 def BFS_tree(node):
-    pass
+    q = [node]
+    while q:
+        curr = q.pop(0)
+        print(curr)
+        if curr.left: 
+            q.append(curr.left)
+        if curr.right: 
+            q.append(curr.right)
 
+#BFS_tree(a)
 
 # Problem 4
 
@@ -75,14 +95,23 @@ def BFS_tree(node):
 # tree and the height of the tree when inserting nodes with values generated
 # using random.random()
 
+import random
 
 def make_random_tree(n_nodes):
-    '''Make a tree with n_nodes nodes by inserting nodes with values
-    drawn using random.random()
-    '''
+    ret = BST(random.random())
+    for i in range(n_nodes-1):
+        ret.insert(random.random())
+    return ret
 
 def height_random_tree(n_nodes):
     '''Generate a random tree with n_nodes nodes, and return its height'''
+    return tree_height(make_random_tree(n_nodes))
+
+def avg_height(n_trees, n_nodes):
+    sum = 0
+    for i in range(n_trees):
+        sum += height_random_tree(n_nodes)
+    return sum/n_trees 
 
 def make_data(max_nodes):
     '''Make two lists representing the empirical relationship between
@@ -96,10 +125,19 @@ def make_data(max_nodes):
     N_TREES = 40
     n_nodes = 5
 
+    n, h = [], []
+    i = 0
+    while 1:
+        n_nodes = int(1.2**i*5)
+        if n_nodes > max_nodes: break
+        n.append(n_nodes)
+        h.append(avg_height(N_TREES, n_nodes))
+        i += 1
+
     return n, h
 
 n, h = make_data(10000)
 import matplotlib.pyplot as plt
 plt.scatter(n, h)
 plt.show()
-# plt.savefig("trees.png") can save the data to disk
+plt.savefig("trees.png") 
