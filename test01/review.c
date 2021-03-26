@@ -121,6 +121,15 @@ void test4(int *a[]){
 }
 
 int main(){
+    char a = 'a';
+    char b = 'b';
+    char **arr = malloc(200);
+    arr[0] = &a;
+    arr[1] = &b;
+    char ***arr_ptr = &arr;
+    printf("%c\n", *((*arr_ptr)[1]));
+
+
 
     // char a[] = "hello";
     // a[3] = '\0';
