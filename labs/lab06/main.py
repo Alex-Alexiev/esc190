@@ -65,7 +65,7 @@ a.insert(15)
 # Write code to find the height of a Binary Search Tree
 
 def tree_height(node):
-    if node is None: return 0
+    if node is None: return -1
     return 1 + max(tree_height(node.left), tree_height(node.right))
 
 print(tree_height(a))
@@ -87,7 +87,7 @@ def BFS_tree(node):
         if curr.right: 
             q.append(curr.right)
 
-#BFS_tree(a)
+BFS_tree(a)
 
 # Problem 4
 
