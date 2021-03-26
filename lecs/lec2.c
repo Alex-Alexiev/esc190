@@ -9,6 +9,7 @@ void swap(int *p_a, int *p_b){
 int main(){
     int a = 10;
     int b = 12;
+
     swap(&a, &b);
     printf("a:%d, b:%d\n", a, b);
     return 0;
