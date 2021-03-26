@@ -13,6 +13,7 @@ all: $(BIN)/$(EXECUTABLE)
 run: clean all 
 	@./$(BIN)/$(EXECUTABLE)
 
+
 $(BIN)/$(EXECUTABLE): $(SRC)/*.c
 	$(CC) $(CC_FLAGS) -I$(INCLUDE) $^ -o $@ $(LIBRARIES)
 
