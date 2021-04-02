@@ -251,6 +251,11 @@ void avl_update_height(avl_node_t *node);
 static
 avl_node_t *avl_node_create(bag_elem_t elem);
 
+bool binary_insert(avl_node_t **root, bag_elem_t elem,
+                int (*cmp)(bag_elem_t, bag_elem_t));
+
+bool is_avl_tree_rec(avl_node_t *node);
+
 /******************************************************************************
  *  Definitions of "public" functions -- see header file for documentation.   *
  ******************************************************************************/
