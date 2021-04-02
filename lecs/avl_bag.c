@@ -9,7 +9,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include<math.h>
 
 #include "bag.h"
 
@@ -591,57 +590,3 @@ void bag_print(const bag_t *bag, int indent, void (*print)(bag_elem_t))
 {
     avl_print(bag->root, 1, indent, print);
 }
-
-bool is_avl_tree_rec(avl_node_t *node){
-    if(!node){
-        return true;
-    }
-    if(abs(HEIGHT(node->left) - (HEIGHT(node->right))) > 1){
-        return false;
-    }
-    return(is_avl_tree_rec(node->left) && is_avl_tree_rec(node->right));
-}
-
-bool is_avl_tree(bag_t *bag){
-    return is_avl_tree_rec(bag->root);
-}
-
-bool binary_insert(avl_node_t **root, bag_elem_t elem,
-                int (*cmp)(bag_elem_t, bag_elem_t)){
-
-    bool inserted;
-
-    if (! *root) {
-        inserted = (*root = avl_node_create(elem));
-    } 
-    else if ((*cmp)(elem, (*root)->elem) < 0) {
-        if ((inserted = binary_insert(&(*root)->left, elem, cmp))) {
-            /* Check if the subtree needs rebalancing; update its height. */
-            avl_update_height(*root);
-        }
-    } 
-    else if ((*cmp)(elem, (*root)->elem) > 0) {
-        if ((inserted = binary_insert(&(*root)->right, elem, cmp))) {
-            /* Check if the subtree needs rebalancing; update its height. */
-            avl_update_height(*root);
-        }
-    } else { /* ((*cmp)(elem, (*root)->elem) == 0) */
-        /* Insert into the subtree with smaller height. */
-        inserted = avl_insert(&(*root)->right, elem, cmp);
-        /* No rebalancing necessary, but update height. */
-        if (inserted)  avl_update_height(*root);
-    }
-
-    return inserted;
-}
-
-bool bag_insert_norot(bag_t *bag, bag_elem_t elem){
-    if (binary_insert(&bag->root, elem, bag->cmp)) {
-        bag->size++;
-        return true;
-    } else {
-        return false;
-    }
-
-}
-

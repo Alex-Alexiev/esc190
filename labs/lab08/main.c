@@ -67,101 +67,118 @@ void float_print(bag_elem_t e)
 
 int main(void)
 {
-    size_t i;
-    float elts[] = {3.2, 3.1, 3, 10, 11, 4, 1, 0, 0.2, 5, 0.4, 2};
-    float bad_elts[] = {56, 0.001, 0.2000001, 75, 50, -1, 0.1};
+    // size_t i;
+    // float elts[] = {3.2, 3.1, 3, 10, 11, 4, 1, 0, 0.2, 5, 0.4, 2};
+    // float bad_elts[] = {56, 0.001, 0.2000001, 75, 50, -1, 0.1};
 
     /* Create a new bag. */
-    bag_t *b1 = bag_create(float_cmp);
+    // bag_t *b1 = bag_create(float_cmp);
 
     /* Try to remove something from an empty bag. */
-    assert(! bag_remove(b1, &elts[0]));
+    // assert(! bag_remove(b1, &elts[0]));
 
-    /* Check that the bag is really empty. */
-    printf("Empty bag: size = %lu\nelems:", bag_size(b1));
-    bag_traverse(b1, float_print);
-    printf("\nAs a tree:\n");
-    bag_print(b1, 8, float_print);
-    printf("An empty bag %s contain %g.\n",
-           bag_contains(b1, &elts[0]) ? "does" : "does not", elts[0]);
+    // /* Check that the bag is really empty. */
+    // printf("Empty bag: size = %lu\nelems:", bag_size(b1));
+    // bag_traverse(b1, float_print);
+    // printf("\nAs a tree:\n");
+    // bag_print(b1, 8, float_print);
+    // printf("An empty bag %s contain %g.\n",
+    //        bag_contains(b1, &elts[0]) ? "does" : "does not", elts[0]);
 
-    /* Check that we can insert values into it. */
-    for (i = 0; i < sizeof(elts) / sizeof(elts[0]); ++i) {
-        assert(bag_insert(b1, &elts[i]));
-        printf("After inserting %g: size = %lu\nelems:", elts[i], bag_size(b1));
-        bag_traverse(b1, float_print);
-        printf("\nAs a tree:\n");
-        bag_print(b1, 8, float_print);
-        assert(bag_contains(b1, &elts[i]));
-        assert(bag_size(b1) == i + 1);
-    }
+    // /* Check that we can insert values into it. */
+    // for (i = 0; i < sizeof(elts) / sizeof(elts[0]); ++i) {
+    //     assert(bag_insert(b1, &elts[i]));
+    //     printf("After inserting %g: size = %lu\nelems:", elts[i], bag_size(b1));
+    //     bag_traverse(b1, float_print);
+    //     printf("\nAs a tree:\n");
+    //     bag_print(b1, 8, float_print);
+    //     assert(bag_contains(b1, &elts[i]));
+    //     assert(bag_size(b1) == i + 1);
+    // }
 
-    /* See if anything got lost. */
-    printf("Lost any element?  ");
-    for (i = 0; i < sizeof(elts) / sizeof(elts[0]); ++i) {
-        assert(bag_contains(b1, &elts[i]));
-    }
-    printf("No!\n");
+    // /* See if anything got lost. */
+    // printf("Lost any element?  ");
+    // for (i = 0; i < sizeof(elts) / sizeof(elts[0]); ++i) {
+    //     assert(bag_contains(b1, &elts[i]));
+    // }
+    // printf("No!\n");
 
-    /* See if the bag contains anything it's not supposed to. */
-    printf("Any extra elements in there?  ");
-    for (i = 0; i < sizeof(bad_elts) / sizeof(bad_elts[0]); ++i)
-    {
-        assert(! bag_contains(b1, &bad_elts[i]));
-    }
-    printf("No!\n");
+    // /* See if the bag contains anything it's not supposed to. */
+    // printf("Any extra elements in there?  ");
+    // for (i = 0; i < sizeof(bad_elts) / sizeof(bad_elts[0]); ++i)
+    // {
+    //     assert(! bag_contains(b1, &bad_elts[i]));
+    // }
+    // printf("No!\n");
 
-    /* Try to insert things twice. */
-    printf("Can we insert elements twice?  ");
-    for (i = 0; i < sizeof(elts) / sizeof(elts[0]); ++i) {
-        assert(bag_insert(b1, &elts[i]));
-        assert(bag_size(b1) == i + 1 + sizeof(elts) / sizeof(elts[0]));
-    }
-    printf("Yes: size = %lu\nelems:", bag_size(b1));
-    bag_traverse(b1, float_print);
-    printf("\nAs a tree:\n");
-    bag_print(b1, 8, float_print);
+    // /* Try to insert things twice. */
+    // printf("Can we insert elements twice?  ");
+    // for (i = 0; i < sizeof(elts) / sizeof(elts[0]); ++i) {
+    //     assert(bag_insert(b1, &elts[i]));
+    //     assert(bag_size(b1) == i + 1 + sizeof(elts) / sizeof(elts[0]));
+    // }
+    // printf("Yes: size = %lu\nelems:", bag_size(b1));
+    // bag_traverse(b1, float_print);
+    // printf("\nAs a tree:\n");
+    // bag_print(b1, 8, float_print);
 
-    /* Try to remove non-existent elements: should have no effect. */
-    printf("Can we remove non-existent elements?  ");
-    for (i = 0; i < sizeof(bad_elts) / sizeof(elts[0]); ++i) {
-        assert(! bag_remove(b1, &bad_elts[i]));
-        assert(bag_size(b1) == 2 * sizeof(elts) / sizeof(elts[0]));
-    }
-    printf("No!\n");
+    // /* Try to remove non-existent elements: should have no effect. */
+    // printf("Can we remove non-existent elements?  ");
+    // for (i = 0; i < sizeof(bad_elts) / sizeof(elts[0]); ++i) {
+    //     assert(! bag_remove(b1, &bad_elts[i]));
+    //     assert(bag_size(b1) == 2 * sizeof(elts) / sizeof(elts[0]));
+    // }
+    // printf("No!\n");
 
-    /* Make sure duplicate elements can be removed. */
-    for (i = 0; i < sizeof(elts) / sizeof(elts[0]); ++i) {
-        assert(bag_remove(b1, &elts[i]));
-        printf("After removing %g: size = %lu\nelems:", elts[i], bag_size(b1));
-        bag_traverse(b1, float_print);
-        printf("\nAs a tree:\n");
-        bag_print(b1, 8, float_print);
-        assert(bag_contains(b1, &elts[i]));
-        assert(bag_size(b1) == 2 * sizeof(elts) / sizeof(elts[0]) - i - 1);
-    }
+    // /* Make sure duplicate elements can be removed. */
+    // for (i = 0; i < sizeof(elts) / sizeof(elts[0]); ++i) {
+    //     assert(bag_remove(b1, &elts[i]));
+    //     printf("After removing %g: size = %lu\nelems:", elts[i], bag_size(b1));
+    //     bag_traverse(b1, float_print);
+    //     printf("\nAs a tree:\n");
+    //     bag_print(b1, 8, float_print);
+    //     assert(bag_contains(b1, &elts[i]));
+    //     assert(bag_size(b1) == 2 * sizeof(elts) / sizeof(elts[0]) - i - 1);
+    // }
 
-    /* Make sure elements can be removed. */
-    for (i = 0; i < sizeof(elts) / sizeof(elts[0]); ++i) {
-        assert(bag_remove(b1, &elts[i]));
-        printf("After removing %g: size = %lu\nelems:", elts[i], bag_size(b1));
-        bag_traverse(b1, float_print);
-        printf("\nAs a tree:\n");
-        bag_print(b1, 8, float_print);
-        assert(! bag_contains(b1, &elts[i]));
-        assert(bag_size(b1) == sizeof(elts) / sizeof(elts[0]) - i - 1);
-    }
+    // /* Make sure elements can be removed. */
+    // for (i = 0; i < sizeof(elts) / sizeof(elts[0]); ++i) {
+    //     assert(bag_remove(b1, &elts[i]));
+    //     printf("After removing %g: size = %lu\nelems:", elts[i], bag_size(b1));
+    //     bag_traverse(b1, float_print);
+    //     printf("\nAs a tree:\n");
+    //     bag_print(b1, 8, float_print);
+    //     assert(! bag_contains(b1, &elts[i]));
+    //     assert(bag_size(b1) == sizeof(elts) / sizeof(elts[0]) - i - 1);
+    // }
+    int i;
 
+    bag_t *b1 = bag_create(float_cmp);
     bag_t *b2 = bag_create(float_cmp);
-    float nums[] = {1,2,6,4,5};
+    float nums[] = {1,2,3,4,5};
+
     for (i = 0; i < sizeof(nums) / sizeof(nums[0]); ++i) {
-        assert(bag_insert_norot(b2, &nums[i]));
+        assert(bag_insert_norot(b1, &nums[i]));
+        assert(bag_insert(b2, &nums[i]));
     }
+
+    printf("%s\n", "non-avl tree");
+    bag_print(b1, 8, float_print);
+
+    printf("%s\n", "avl tree");
     bag_print(b2, 8, float_print);
-    printf("%d\n", is_avl_tree(b1));
-    printf("%d", is_avl_tree(b2));
+
+    printf("The non-avl tree: %d\n", is_avl_tree(b1));
+    printf("The avl tree: %d\n", is_avl_tree(b2));
+    
+    printf("\n");
+    assert(bag_remove(b2, &nums[0]));
+    printf("%s\n", "avl tree after removal");
+    bag_print(b2, 8, float_print);
+
     /* Clean up... */
     bag_destroy(b1);
+    bag_destroy(b2);
 
     return EXIT_SUCCESS;
 }

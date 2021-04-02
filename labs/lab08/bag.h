@@ -115,4 +115,9 @@ bool bag_insert(bag_t *b, bag_elem_t e);
  */
 bool bag_remove(bag_t *b, bag_elem_t e);
 
+/*lab 08*/
+bool bag_insert_norot(bag_t *bag, bag_elem_t elem);
+
+bool is_avl_tree(bag_t *bag);
+
 #endif/*_BAG_H*/
