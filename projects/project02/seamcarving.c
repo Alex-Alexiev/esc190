@@ -14,6 +14,7 @@ double get_min(double *arr, int items);
 int get_smallest_index(double *best, int start_col, int row, int num, int width);
 void recover_path(double *best, int height, int width, int **path);
 
+/*i is height, j is width*/
 
 
 void calc_energy(struct rgb_img *im, struct rgb_img **grad){
@@ -44,7 +45,7 @@ void calc_energy(struct rgb_img *im, struct rgb_img **grad){
 void dynamic_seam(struct rgb_img *grad, double **best_arr){
     int width = grad->width;
     int height = grad->height;
-    (*best_arr) = (double *)malloc(width*height);
+    (*best_arr) = (double *)malloc(sizeof(double) * width * height);
     int j;
     for (j = 0; j < width; j++){
         (*best_arr)[get_index(0, j, width)] = get_pixel(grad, 0, j, 0);
@@ -61,7 +62,7 @@ void dynamic_seam(struct rgb_img *grad, double **best_arr){
         }
     }
 
-    print_double_arr(*best_arr, height, width);
+    // print_double_arr(*best_arr, height, width);
 
 }
 
@@ -81,6 +82,16 @@ void print_double_arr(double *arr, int height, int width){
         }
     }
 }
+
+void print_int_arr(int *arr, int height, int width){
+    for(int i = 0; i < height; i++){
+        printf("\n");
+        for(int j = 0; j  < width; j++){
+            printf("%d ", arr[get_index(i, j, width)]);
+        }
+    }
+}
+
 
 int get_index(int y, int x, int width){
     return y*width + x;
@@ -113,31 +124,75 @@ int get_smallest_index(double *best, int start_col, int row, int num, int width)
 }
 
 void recover_path(double *best, int height, int width, int **path){
-    malloc(200);
-    // *path = malloc(200);
-    
-    //initial pass
+    *path = malloc(sizeof(int) * height);
+    // initial pass
     int min_ind = get_smallest_index(best, 0, height - 1, width, width);
-    
     (*path)[height - 1] = min_ind;
-    
+
     for(int j = height - 2; j > -1; j--){
         min_ind = get_smallest_index(best, min_ind - 1, j, 3, width);       
         (*path)[j] = min_ind;
     }
 }
 
-
-int main(){
-    struct rgb_img *im;
-    read_in_img(&im, "6x5.bin");
-    struct rgb_img *grad;
-    double *best;
-    int *path;
-    printf("%s", "start");
-    calc_energy(im, &grad);
-    dynamic_seam(grad, &best);
-    recover_path(best, 5, 6, &path);
-    // print_grad(grad); 
+void remove_seam(struct rgb_img *src, struct rgb_img **dest, int *path){
+    create_img(dest, src->height, src->width-1);
+    for(int i = 0; i < src->height; i++){
+        int skip = 0;
+        for(int j = 0; j < src->width; j++){
+            if(path[i] == j){
+                skip++;
+                continue;
+            }
+        uint8_t r = get_pixel(src, i, j, 0);
+        uint8_t g = get_pixel(src, i, j, 1);
+        uint8_t b = get_pixel(src, i, j, 2);    
+        set_pixel(*dest, i, j-skip, r, g, b);
+        }
+    }
 }
+
+// int main(){
+//     // struct rgb_img *im;
+//     // read_in_img(&im, "HJ.bin");
+//     // struct rgb_img *grad;
+//     // double *best;
+//     // struct rgb_img *dest;
+//     // calc_energy(im, &grad);
+//     // dynamic_seam(grad, &best);
+//     // int *path;
+//     // recover_path(best, 5, 6, &path);
+//     // struct rgb_img *dest2;
+//     // remove_seam(im, &dest2, path);
+//     // print_int_arr(path, 1, 5);
+//     // printf("\n");
+//     // print_grad(im);
+//     // printf("\n");
+//     // print_grad(dest2);
+//     struct rgb_img *im;
+//     struct rgb_img *cur_im;
+//     struct rgb_img *grad;
+//     double *best;
+//     int *path;
+
+//     read_in_img(&im, "HJoceanSmall.bin");
+    
+//     for(int i = 0; i < 150; i++){
+//         calc_energy(im,  &grad);
+//         dynamic_seam(grad, &best);
+//         recover_path(best, grad->height, grad->width, &path);
+//         remove_seam(im, &cur_im, path);
+
+//         destroy_image(im);
+//         destroy_image(grad);
+//         free(best);
+//         free(path);
+//         im = cur_im;
+//     }
+//     char filename[200];
+//     sprintf(filename, "img5.bin");
+//     write_img(cur_im, filename);
+
+//     destroy_image(im);
+// }
 
