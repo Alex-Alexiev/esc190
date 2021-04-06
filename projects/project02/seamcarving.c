@@ -11,6 +11,8 @@ int wrap_num(int n, int max);
 int get_index(int y, int x, int width);
 void print_double_arr(double *arr, int height, int width);
 double get_min(double *arr, int items);
+int get_smallest_index(double *best, int start_col, int row, int num, int width);
+void recover_path(double *best, int height, int width, int **path);
 
 
 
@@ -94,15 +96,48 @@ int wrap_num(int n, int max){
     return n;
 }
 
+int get_smallest_index(double *best, int start_col, int row, int num, int width){
+    int min_index = start_col;
+    for (int i = start_col; i < start_col + num; i++){
+        if (i < 0){
+            i++;
+        }
+        if (i == width){
+            break;
+        }
+        if (best[get_index(row, i, width)] < best[get_index(row, min_index, width)]){
+            min_index = i;
+        }
+    }
+    return min_index;
+}
+
+void recover_path(double *best, int height, int width, int **path){
+    malloc(200);
+    // *path = malloc(200);
+    
+    //initial pass
+    int min_ind = get_smallest_index(best, 0, height - 1, width, width);
+    
+    (*path)[height - 1] = min_ind;
+    
+    for(int j = height - 2; j > -1; j--){
+        min_ind = get_smallest_index(best, min_ind - 1, j, 3, width);       
+        (*path)[j] = min_ind;
+    }
+}
+
 
 int main(){
     struct rgb_img *im;
     read_in_img(&im, "6x5.bin");
     struct rgb_img *grad;
     double *best;
+    int *path;
     printf("%s", "start");
     calc_energy(im, &grad);
     dynamic_seam(grad, &best);
+    recover_path(best, 5, 6, &path);
     // print_grad(grad); 
 }
 
