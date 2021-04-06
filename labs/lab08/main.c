@@ -151,34 +151,66 @@ int main(void)
     //     assert(! bag_contains(b1, &elts[i]));
     //     assert(bag_size(b1) == sizeof(elts) / sizeof(elts[0]) - i - 1);
     // }
-    int i;
+    // int i;
 
+    // bag_t *b1 = bag_create(float_cmp);
+    // bag_t *b2 = bag_create(float_cmp);
+    // float nums[] = {1,2,3,4,5};
+
+    // for (i = 0; i < sizeof(nums) / sizeof(nums[0]); ++i) {
+    //     assert(bag_insert_norot(b1, &nums[i]));
+    //     assert(bag_insert(b2, &nums[i]));
+    // }
+
+    // printf("%s\n", "non-avl tree");
+    // bag_print(b1, 8, float_print);
+
+    // printf("%s\n", "avl tree");
+    // bag_print(b2, 8, float_print);
+
+    // printf("The non-avl tree: %d\n", is_avl_tree(b1));
+    // printf("The avl tree: %d\n", is_avl_tree(b2));
+    
+    // printf("\n");
+    // assert(bag_remove(b2, &nums[0]));
+    // printf("%s\n", "avl tree after removal");
+    // bag_print(b2, 8, float_print);
+
+    // /* Clean up... */
+    // bag_destroy(b1);
+    // bag_destroy(b2);
+
+        float elts[] = {3.2, 3.1, 3, 10, 11, 4, 1, 0, 0.2, 5, 0.4, 2};
+    
+    /* Create a new bag. */
     bag_t *b1 = bag_create(float_cmp);
-    bag_t *b2 = bag_create(float_cmp);
-    float nums[] = {1,2,3,4,5};
 
-    for (i = 0; i < sizeof(nums) / sizeof(nums[0]); ++i) {
-        assert(bag_insert_norot(b1, &nums[i]));
-        assert(bag_insert(b2, &nums[i]));
+    
+    /* Check that we can insert values into it. */
+    for (int i = 0; i < sizeof(elts) / sizeof(elts[0]); ++i) {
+        assert(bag_insert(b1, &elts[i]));
+        assert(bag_contains(b1, &elts[i]));
+        assert(bag_size(b1) == i + 1);
     }
 
-    printf("%s\n", "non-avl tree");
     bag_print(b1, 8, float_print);
 
-    printf("%s\n", "avl tree");
-    bag_print(b2, 8, float_print);
+    printf("Is this an AVL tree? %d\n", is_avl_tree(b1));
 
-    printf("The non-avl tree: %d\n", is_avl_tree(b1));
-    printf("The avl tree: %d\n", is_avl_tree(b2));
+    float elts2[] = {1000.0, 1001.0};
+    assert(bag_insert_norot(b1, &elts2[0]));
+
+    bag_print(b1, 8, float_print);
+    printf("Is this an AVL tree? %d\n", is_avl_tree(b1));
+
+    assert(bag_insert_norot(b1, &elts2[1]));
+    bag_print(b1, 8, float_print);
+    printf("Is this an AVL tree? %d\n", is_avl_tree(b1));
     
-    printf("\n");
-    assert(bag_remove(b2, &nums[0]));
-    printf("%s\n", "avl tree after removal");
-    bag_print(b2, 8, float_print);
+    assert(bag_insert_norot(b1, &elts2[1]));
+    bag_print(b1, 8, float_print);
+    printf("Is this an AVL tree? %d\n", is_avl_tree(b1));
 
-    /* Clean up... */
-    bag_destroy(b1);
-    bag_destroy(b2);
 
     return EXIT_SUCCESS;
 }
