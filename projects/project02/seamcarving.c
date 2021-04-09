@@ -108,12 +108,12 @@ int wrap_num(int n, int max){
 }
 
 int get_smallest_index(double *best, int start_col, int row, int num, int width){
-    int min_index = start_col;
+    int min_index = start_col < 0 ? 0 : start_col;
     for (int i = start_col; i < start_col + num; i++){
         if (i < 0){
             i++;
         }
-        if (i == width){
+        if (i >= width){
             break;
         }
         if (best[get_index(row, i, width)] < best[get_index(row, min_index, width)]){
@@ -153,46 +153,46 @@ void remove_seam(struct rgb_img *src, struct rgb_img **dest, int *path){
 }
 
 // int main(){
-//     // struct rgb_img *im;
-//     // read_in_img(&im, "HJ.bin");
-//     // struct rgb_img *grad;
-//     // double *best;
-//     // struct rgb_img *dest;
-//     // calc_energy(im, &grad);
-//     // dynamic_seam(grad, &best);
-//     // int *path;
-//     // recover_path(best, 5, 6, &path);
-//     // struct rgb_img *dest2;
-//     // remove_seam(im, &dest2, path);
-//     // print_int_arr(path, 1, 5);
+//     struct rgb_img *im;
+//     read_in_img(&im, "3x4.bin");
+//     struct rgb_img *grad;
+//     double *best;
+//     struct rgb_img *dest;
+//     calc_energy(im, &grad);
+//     dynamic_seam(grad, &best);
+//     int *path;
+//     recover_path(best, 4, 3, &path);
+//     struct rgb_img *dest2;
+//     //remove_seam(im, &dest2, path);
+//     print_int_arr(path, 1, 4);
 //     // printf("\n");
 //     // print_grad(im);
 //     // printf("\n");
 //     // print_grad(dest2);
-//     struct rgb_img *im;
-//     struct rgb_img *cur_im;
-//     struct rgb_img *grad;
-//     double *best;
-//     int *path;
+//     // struct rgb_img *im;
+//     // struct rgb_img *cur_im;
+//     // struct rgb_img *grad;
+//     // double *best;
+//     // int *path;
 
-//     read_in_img(&im, "HJoceanSmall.bin");
+//     // read_in_img(&im, "HJoceanSmall.bin");
     
-//     for(int i = 0; i < 150; i++){
-//         calc_energy(im,  &grad);
-//         dynamic_seam(grad, &best);
-//         recover_path(best, grad->height, grad->width, &path);
-//         remove_seam(im, &cur_im, path);
+//     // for(int i = 0; i < 150; i++){
+//     //     calc_energy(im,  &grad);
+//     //     dynamic_seam(grad, &best);
+//     //     recover_path(best, grad->height, grad->width, &path);
+//     //     remove_seam(im, &cur_im, path);
 
-//         destroy_image(im);
-//         destroy_image(grad);
-//         free(best);
-//         free(path);
-//         im = cur_im;
-//     }
-//     char filename[200];
-//     sprintf(filename, "img5.bin");
-//     write_img(cur_im, filename);
+//     //     destroy_image(im);
+//     //     destroy_image(grad);
+//     //     free(best);
+//     //     free(path);
+//     //     im = cur_im;
+//     // }
+//     // char filename[200];
+//     // sprintf(filename, "img5.bin");
+//     // write_img(cur_im, filename);
 
-//     destroy_image(im);
+//     // destroy_image(im);
 // }
 
