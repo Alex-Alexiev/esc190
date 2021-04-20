@@ -118,7 +118,8 @@ def dijsktra_pq(node):
             count += 1
         
     return d 
-        
+
+
 
         
 
@@ -213,17 +214,17 @@ if __name__ == '__main__':
     connect(SF, DC, 5)
     
 
-    BFS(TO)
-    unvisit_all(TO)
-    DFS_rec(TO)
-    unvisit_all(TO)
+    # BFS(TO)
+    # unvisit_all(TO)
+    # DFS_rec(TO)
+    # unvisit_all(TO)
     DFS_nonrec(TO)
-    unvisit_all(TO)
+    # unvisit_all(TO)
 
-    d, prev = dijsktra_slowish_2(TO)
+    # d, prev = dijsktra_slowish_2(TO)
 
-    for key, val in d.items():
-        print(key.name, " ", val)
+    # for key, val in d.items():
+    #     print(key.name, " ", val)
 
     # d = dijsktra_pq(TO)
     # for key, val in d.items():
