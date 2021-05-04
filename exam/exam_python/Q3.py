@@ -42,6 +42,7 @@ def nth_laregst(node, n, visited):
     if visited[0] == n:
         visited[1] = node.value
         return 
+    nth_laregst(node.left, n, visited)
 
 def third_largest(node):
     visited = [0, 0]
